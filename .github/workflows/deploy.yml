@@ -3,6 +3,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 env:
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
@@ -11,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - uses: pnpm/action-setup@v4
         with:
@@ -28,20 +33,21 @@ jobs:
         run: pnpm add -g vercel
         
       - name: Deploy to Vercel
-        id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy --prod \
+          echo "🚀 Starting deployment..."
+          OUTPUT=$(vercel deploy --prod \
             --token=$VERCEL_TOKEN \
             --yes \
-            --name=z-agency-website 2>&1 | grep "https://" | tail -1)
-          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
-          echo "🚀 Deployed to: $DEPLOY_URL"
+            --name=z-agency-website 2>&1)
+          echo "$OUTPUT"
+          DEPLOY_URL=$(echo "$OUTPUT" | grep "https://" | grep "vercel.app" | tail -1)
+          echo ""
+          echo "✅ DEPLOYMENT URL: $DEPLOY_URL"
+          echo "$DEPLOY_URL" > /tmp/deploy_url.txt
           
-      - name: Save deployment URL
+      - name: Create deployment summary
         run: |
-          echo "${{ steps.deploy.outputs.url }}" > DEPLOYMENT_URL.txt
-          git config user.email "deploy@zagency.com"
-          git config user.name "Z Agency Deploy Bot"
-          git add DEPLOYMENT_URL.txt
-          git diff --staged --quiet || git commit -m "Update deployment URL [skip ci]"
-          git push
+          URL=$(cat /tmp/deploy_url.txt 2>/dev/null || echo "Check Vercel dashboard")
+          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** $URL" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ✅ Live" >> $GITHUB_STEP_SUMMARY
