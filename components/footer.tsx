@@ -119,7 +119,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <Link href="/" className="inline-block mb-4">
-              <img src="/zed-logo.jpg" alt="ZED AGENCY" className="h-12 w-auto object-contain" />
+              <img src="/zed-logo.jpg" alt="ZED AGENCY" className="h-11 w-auto object-contain rounded-lg px-2 py-1 bg-white" />
             </Link>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs">
               Premium digital agency crafting exceptional web experiences, mobile apps, and SaaS solutions.

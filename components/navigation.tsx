@@ -41,7 +41,11 @@ export function Navigation() {
               whileHover={{ scale: 1.05 }}
               className="flex items-center gap-2"
             >
-              <img src="/zed-logo.jpg" alt="ZED AGENCY" className="h-10 w-auto object-contain" />
+              <img 
+                src="/zed-logo.jpg" 
+                alt="ZED AGENCY" 
+                className="h-9 w-auto object-contain rounded-lg px-2 py-1 bg-white"
+              />
             </motion.div>
           </Link>
 
