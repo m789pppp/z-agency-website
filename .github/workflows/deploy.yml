@@ -28,8 +28,20 @@ jobs:
         run: pnpm add -g vercel
         
       - name: Deploy to Vercel
+        id: deploy
         run: |
-          vercel deploy --prod \
+          DEPLOY_URL=$(vercel deploy --prod \
             --token=$VERCEL_TOKEN \
             --yes \
-            --name=z-agency-website 2>&1
+            --name=z-agency-website 2>&1 | grep "https://" | tail -1)
+          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "🚀 Deployed to: $DEPLOY_URL"
+          
+      - name: Save deployment URL
+        run: |
+          echo "${{ steps.deploy.outputs.url }}" > DEPLOYMENT_URL.txt
+          git config user.email "deploy@zagency.com"
+          git config user.name "Z Agency Deploy Bot"
+          git add DEPLOYMENT_URL.txt
+          git diff --staged --quiet || git commit -m "Update deployment URL [skip ci]"
+          git push
