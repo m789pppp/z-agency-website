@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       
       - uses: pnpm/action-setup@v4
         with:
@@ -34,20 +32,24 @@ jobs:
         
       - name: Deploy to Vercel
         run: |
-          echo "🚀 Starting deployment..."
           OUTPUT=$(vercel deploy --prod \
             --token=$VERCEL_TOKEN \
             --yes \
             --name=z-agency-website 2>&1)
           echo "$OUTPUT"
-          DEPLOY_URL=$(echo "$OUTPUT" | grep "https://" | grep "vercel.app" | tail -1)
-          echo ""
-          echo "✅ DEPLOYMENT URL: $DEPLOY_URL"
-          echo "$DEPLOY_URL" > /tmp/deploy_url.txt
+          DEPLOY_URL=$(echo "$OUTPUT" | grep -oE 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -1)
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+          echo "$DEPLOY_URL" > deploy-url.txt
+          echo "✅ DEPLOYED: $DEPLOY_URL"
           
-      - name: Create deployment summary
+      - name: Upload URL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-url
+          path: deploy-url.txt
+          retention-days: 7
+          
+      - name: Summary
         run: |
-          URL=$(cat /tmp/deploy_url.txt 2>/dev/null || echo "Check Vercel dashboard")
-          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
-          echo "**URL:** $URL" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ✅ Live" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ Deployed!" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 URL: $DEPLOY_URL" >> $GITHUB_STEP_SUMMARY
