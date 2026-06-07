@@ -6,11 +6,33 @@ import { ArrowUpRight, Sparkles, GraduationCap, School, Leaf, ShoppingCart, Palm
 
 const projects = [
   {
+    id: 4,
+    title: "Zed Agency E-Commerce Platform",
+    category: "E-Commerce",
+    description: "Full-featured e-commerce platform with admin dashboard, order management, payment integration, and mobile app — all in one system.",
+    image: "/project-ecommerce.jpg",
+    technologies: ["React", "Node.js", "Stripe", "Mobile App"],
+    highlights: ["Admin dashboard", "Order management", "Payment integration", "Mobile storefront"],
+    icon: ShoppingCart,
+    facebookUrl: "https://www.facebook.com/share/p/1DQjx8oY5j/?mibextid=wwXIfr"
+  },
+  {
+    id: 5,
+    title: "Tourism Software System",
+    category: "Tourism Technology",
+    description: "Tailored tourism platform with booking systems, excursion management, custom API integration, and all-in-one CRM for travel businesses.",
+    image: "/project-tourism.jpg",
+    technologies: ["Next.js", "CRM", "Booking API", "Custom Integrations"],
+    highlights: ["Booking systems", "Excursion management", "Custom API integration", "All-in-one CRM"],
+    icon: Palmtree,
+    facebookUrl: "https://www.facebook.com/share/p/1DQjx8oY5j/?mibextid=wwXIfr"
+  },
+  {
     id: 1,
     title: "Z Admission",
     category: "Education Technology",
     description: "AI-powered platform helping students discover admissions opportunities, scholarships, competitions, summer programs, and educational guidance.",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=600&fit=crop",
+    image: "/project-zadmission.jpg",
     technologies: ["Next.js", "AI/ML", "TypeScript", "Tailwind CSS"],
     highlights: ["Egypt-focused education platform", "AI-powered assistant", "Student opportunity discovery", "Admissions guidance"],
     icon: GraduationCap,
@@ -37,39 +59,17 @@ const projects = [
     highlights: ["Sensor integration", "Predictive analytics", "Sustainability focus", "Competition project"],
     icon: Leaf,
     facebookUrl: null
-  },
-  {
-    id: 4,
-    title: "Zed Agency E-Commerce Platform",
-    category: "E-Commerce",
-    description: "Full-featured e-commerce platform with admin dashboard, order management, payment integration, and mobile app — all in one system.",
-    image: "/project-ecommerce.jpg",
-    technologies: ["React", "Node.js", "Stripe", "Mobile App"],
-    highlights: ["Admin dashboard", "Order management", "Payment integration", "Mobile storefront"],
-    icon: ShoppingCart,
-    facebookUrl: "https://www.facebook.com/share/p/1DQjx8oY5j/?mibextid=wwXIfr"
-  },
-  {
-    id: 5,
-    title: "Tourism Software System",
-    category: "Tourism Technology",
-    description: "Tailored tourism platform with booking systems, excursion management, custom API integration, and all-in-one CRM for travel businesses.",
-    image: "/project-tourism.jpg",
-    technologies: ["Next.js", "CRM", "Booking API", "Custom Integrations"],
-    highlights: ["Booking systems", "Excursion management", "Custom API integration", "All-in-one CRM"],
-    icon: Palmtree,
-    facebookUrl: "https://www.facebook.com/share/p/1DQjx8oY5j/?mibextid=wwXIfr"
   }
 ]
 
-const categories = ["All", "Education Technology", "Education Website", "Artificial Intelligence", "E-Commerce", "Tourism Technology"]
+const categories = ["All", "E-Commerce", "Tourism Technology", "Education Technology", "Education Website", "Artificial Intelligence"]
 
 export function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("All")
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
 
-  const filteredProjects = activeCategory === "All" 
-    ? projects 
+  const filteredProjects = activeCategory === "All"
+    ? projects
     : projects.filter(p => p.category === activeCategory)
 
   return (
@@ -140,11 +140,11 @@ export function Portfolio() {
                     />
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                    
+
                     {/* Category Badge */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ 
+                      animate={{
                         opacity: hoveredProject === project.id ? 1 : 0,
                         y: hoveredProject === project.id ? 0 : 20
                       }}
@@ -165,42 +165,31 @@ export function Portfolio() {
 
                   {/* Content */}
                   <div className="p-6">
-                    {/* Title */}
                     <h3 className="text-xl font-semibold text-foreground mb-3 flex items-center justify-between">
                       {project.title}
                       <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </h3>
 
-                    {/* Description */}
                     <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                       {project.description}
                     </p>
 
-                    {/* Highlights */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.highlights.slice(0, 3).map((highlight) => (
-                        <span
-                          key={highlight}
-                          className="text-xs px-2 py-1 rounded-full bg-accent/10 text-accent"
-                        >
+                        <span key={highlight} className="text-xs px-2 py-1 rounded-full bg-accent/10 text-accent">
                           {highlight}
                         </span>
                       ))}
                     </div>
 
-                    {/* Technologies */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-xs px-2 py-1 rounded bg-secondary text-muted-foreground"
-                        >
+                        <span key={tech} className="text-xs px-2 py-1 rounded bg-secondary text-muted-foreground">
                           {tech}
                         </span>
                       ))}
                     </div>
 
-                    {/* Facebook Link */}
                     {project.facebookUrl && (
                       <a
                         href={project.facebookUrl}

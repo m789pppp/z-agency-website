@@ -9,22 +9,31 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Z.AGENCY | Web Development & SaaS',
+  title: 'ZED AGENCY | Web Development & SaaS',
   description:
     'Web Development, SaaS Development, Mobile Apps, Branding, Marketing, SEO and Automation',
-  creator: 'Z.AGENCY',
+  creator: 'ZED AGENCY',
+  icons: {
+    icon: [
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/favicon.ico',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://z.agency',
-    title: 'Z.AGENCY | Premium Digital Solutions',
+    url: 'https://z-agency-website.vercel.app',
+    title: 'ZED AGENCY | Premium Digital Solutions',
     description:
       'We build digital products that grow businesses. Premium software development, branding, and marketing agency.',
-    siteName: 'Z.AGENCY',
+    siteName: 'ZED AGENCY',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Z.AGENCY | Premium Digital Solutions',
+    title: 'ZED AGENCY | Premium Digital Solutions',
     description: 'We build digital products that grow businesses.',
   },
   robots: {
