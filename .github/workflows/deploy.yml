@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - uses: pnpm/action-setup@v4
         with:
@@ -39,17 +42,13 @@ jobs:
           echo "$OUTPUT"
           DEPLOY_URL=$(echo "$OUTPUT" | grep -oE 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -1)
           echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
-          echo "$DEPLOY_URL" > deploy-url.txt
-          echo "✅ DEPLOYED: $DEPLOY_URL"
+          echo "Deployed to: $DEPLOY_URL"
           
-      - name: Upload URL artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-url
-          path: deploy-url.txt
-          retention-days: 7
-          
-      - name: Summary
+      - name: Save URL to repo file
         run: |
-          echo "## ✅ Deployed!" >> $GITHUB_STEP_SUMMARY
-          echo "🌐 URL: $DEPLOY_URL" >> $GITHUB_STEP_SUMMARY
+          echo "$DEPLOY_URL" > LIVE_URL.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add LIVE_URL.txt
+          git diff --staged --quiet || git commit -m "chore: save live URL [skip ci]"
+          git push origin main
